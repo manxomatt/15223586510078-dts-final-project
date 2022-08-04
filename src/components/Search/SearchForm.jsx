@@ -4,13 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { FaRegCalendar, FaUserFriends } from 'react-icons/fa';
 import { Button } from 'antd';
 import DateRangePickerBox from 'components/DatePicker/ReactDates';
-// import Autocomplete from '@koliseoapi/react-autocomplete';
 import { Autocomplete } from '@material-ui/lab';
 // import MapAutoComplete from 'components/Map/MapAutoComplete';
 // import { mapDataHelper } from 'components/Map/mapDataHelper';
 import ViewWithPopup from 'components/ViewWithPopup/ViewWithPopup';
 import InputIncDec from 'components/InputIncDec/InputIncDec';
-import { setStateToUrl } from 'helpers/url_handler';
 // import { LISTING_POSTS_PAGE } from 'settings/constant';
 import clsx from 'clsx';
 import { SearchLocation as search } from 'services/SearchLocation';
@@ -32,6 +30,9 @@ import {
   LocationOn as PinIcon,
   Search as MagnifierIcon,
 } from '@material-ui/icons';
+import { setStateToUrl } from 'helpers/url_handler';
+import { createSearchParams, useNavigate } from 'react-router-dom';
+import { LISTING_POSTS_PAGE } from 'common/constant';
 
 const calendarItem = {
   separator: '-',
@@ -55,8 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SearchForm() {
-  // let navigate = '';
-  // useNavigate();
+  let navigate = useNavigate();
   const [searchDate, setSearchDate] = useState({
     setStartDate: null,
     setEndDate: null,
@@ -102,27 +102,11 @@ export default function SearchForm() {
       location_code: locationCode,
     };
     console.log(query);
-    // console.log(locationCode);
-    // let tempLocation = [];
-    // const mapData = [];
-    // //  mapValue ? mapDataHelper(mapValue) : [];
-    // mapData &&
-    //   mapData.map((singleMapData, i) => {
-    //     return tempLocation.push({
-    //       formattedAddress: singleMapData ? singleMapData.formattedAddress : '',
-    //       lat: singleMapData ? singleMapData.lat.toFixed(3) : null,
-    //       lng: singleMapData ? singleMapData.lng.toFixed(3) : null,
-    //     });
-    //   });
-    // const location = tempLocation ? tempLocation[0] : {};
-
     const search = setStateToUrl(query);
-    console.log(search);
-    // navigate({
-    //   pathname: '',
-    //   LISTING_POSTS_PAGE,
-    //   search: `?${createSearchParams(search)}`,
-    // });
+    navigate({
+      pathname: LISTING_POSTS_PAGE,
+      search: `?${createSearchParams(search)}`,
+    });
   };
 
   useEffect(() => {
@@ -130,7 +114,6 @@ export default function SearchForm() {
     process((options) => {
       setOptions(options);
     });
-    // return () => cancel();
   }, [inputValue]);
   const classes = useStyles();
 
@@ -149,7 +132,6 @@ export default function SearchForm() {
           autoHighlight
           options={options}
           onChange={(event, newValue) => {
-            // setCityCode(newValue.code);
             setLocationCode(newValue.code);
           }}
           onInputChange={(event, newInputValue) => {
@@ -259,7 +241,7 @@ export default function SearchForm() {
         onClick={goToSearchPage}
         //
       >
-        Find Hotels
+        Cari Hotel
       </Button>
     </FormWrapper>
   );
